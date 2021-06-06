@@ -1,0 +1,11 @@
+export const blue = '#0d6efd';
+export const indigo = '#6610f2';
+export const purple = '#6f42c1';
+export const pink = '#d63384';
+export const red = '#dc3545';
+export const orange = '#fd7e14';
+export const yellow = '#ffc107';
+export const green = '#198754';
+export const teal = '#20c997';
+export const cyan = '#0dcaf0';
+export const white = '#ffffff';

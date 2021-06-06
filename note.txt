@@ -1,0 +1,40 @@
+adb devices
+adb -s <device name> reverse tcp:8081 tcp:8081
+adb connect 127.0.0.1:21503
+
+adb -s YT9110SCGK reverse tcp:8081 tcp:8081
+adb -s emulator-5554 reverse tcp:8081 tcp:8081
+
+
+adb devices && adb connect 127.0.0.1:62001 
+
+-http-proxy http://127.0.0.1:8888
+
+emulator -avd myavd -http-proxy http://168.192.1.2:3300
+
+C:\Users\Afdal\AppData\Local\Android\Sdk\emulator\emulator -avd Pixel_2_API_29 -http-proxy http://127.0.0.1:8888
+
+adb connect 127.0.0.1:21503
+
+1.Open terminal and type adb connect 127.0.0.1:62001. type adb devices to make sure your emulator is connected.
+
+2.Go to your project, type react-native run-android --deviceId 127.0.0.1:62001, waiting for the project to finish compiling, and the you will see a red error screen.
+
+3.Open the developer menu, Go to Dev Settings → Debug server host for device, Assume your local ip is 192.168.1.121, then type: 192.168.1.121:8081
+
+.\gradlew app:assembleRelease -x bundleReleaseJsAndAssets
+
+
+emulator -list-avds
+emulator -avd avd_name [ {-option [value]} … ]
+or 
+emulator @avd_name [ {-option [value]} … ]
+
+emulator -list-avds
+emulator -avd Pixel_2_API_29
+adb -s emulator-5554 reverse tcp:8081 tcp:8081
+
+
+
+
+api gurusaham : http://10.234.132.187/api/v1/candles
