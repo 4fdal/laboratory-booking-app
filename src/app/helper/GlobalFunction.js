@@ -44,3 +44,16 @@ export const formatRupiah = money => {
 
   return rupiah;
 };
+
+
+export const formatDate = date => {
+  let newDate = new Date(date);
+  let d = newDate.getDate()
+  let m = newDate.getMonth() + 1
+  let Y = newDate.getFullYear()
+
+  if(d.length < 2) d = "0"+d
+  if(m.length < 2) m = "0"+m
+  
+  return `${Y}-${m}-${d}`
+}
