@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import AppContext from './app/context/AppContext';
 import {StatusBar} from 'react-native';
 import MainNavigation from './navigations/navigations/MainNavigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class MainApp extends Component {
   renderObserver = () => {

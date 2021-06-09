@@ -1,14 +1,15 @@
-import {action, makeObservable, observable} from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 
 export default class MainMobx {
   isLoading = false;
+  cache = {}
 
   constructor() {
     makeObservable(this, {
       isLoading: observable,
-      setLoading: action,
+      cache: observable,
     });
   }
 
-  setLoading = isLoading => (this.isLoading = isLoading);
+  set = (key, value) => this[key] = value
 }
