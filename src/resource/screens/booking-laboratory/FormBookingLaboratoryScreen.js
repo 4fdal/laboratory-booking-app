@@ -50,11 +50,12 @@ class FormBookingLaboratoryScreen extends Component {
     };
   }
   componentDidMount = async () => {
-    await this.requestGetFreeTimeBooking();
+    setLoading(this, false) 
     if (this.props.route.params) {
       let {laboratory} = this.props.route.params;
       this.setState({laboratory});
     }
+    await this.requestGetFreeTimeBooking();
   };
   requestGetFreeTimeBooking = async () => {
     try {
@@ -63,13 +64,17 @@ class FormBookingLaboratoryScreen extends Component {
         data: {
           data: {free_booking_time},
         },
-      } = await request.get('/v1/laboratory/booking/free_booking_time');
+      } = await request.get(
+        `/v1/laboratory/booking/free_booking_time/${this.state.laboratory.id}`,
+      );
 
       if (free_booking_time[0]) {
         let [startTime, endTime] = free_booking_time[0];
 
-        let dateTimeStartOrdering = new Date(startTime.replace(/-/g, '/'));
-        let dateTimeEndOrdering = new Date(endTime.replace(/-/g, '/'));
+        let dateTimeStartOrdering =
+          startTime != null ? new Date(startTime.replace(/-/g, '/')) : null;
+        let dateTimeEndOrdering =
+          endTime != null ? new Date(endTime.replace(/-/g, '/')) : null;
 
         this.setState({dateTimeStartOrdering, dateTimeEndOrdering});
       }
@@ -97,11 +102,21 @@ class FormBookingLaboratoryScreen extends Component {
       };
 
       let request = await RequestAuth(this.props);
-      let data = await request.post(
+      let {
+        data: {
+          data: {booking_schedule, payment},
+        },
+      } = await request.post(
         '/v1/laboratory/booking/plea_submission',
         dataRequest,
       );
+
+      this.props.navigation.replace('PaymentBookingLaboratory', {
+        scheduleBookingId : booking_schedule.id,
+        paymentId : payment.id
+      });
     } catch (error) {
+      this.requestGetFreeTimeBooking()
       handleErrors(this, error);
     }
     setLoading(this, false);
@@ -143,52 +158,57 @@ class FormBookingLaboratoryScreen extends Component {
                     style={{marginLeft: 15}}
                   />
 
-                  <Item
-                    style={{flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Label>Free Time Booking</Label>
-                    <Picker
-                      selectedValue={this.state.selectedFreeTimeBooking}
-                      onValueChange={selectedFreeTimeBooking => {
-                        let {freeTimeBooking} = this.state;
-                        let [startTime, endTime] =
-                          freeTimeBooking[selectedFreeTimeBooking];
+                  {this.state.freeTimeBooking.length != 0 && (
+                    <Item
+                      style={{
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                      }}>
+                      <Label>Free Time Booking</Label>
+                      <Picker
+                        selectedValue={this.state.selectedFreeTimeBooking}
+                        onValueChange={selectedFreeTimeBooking => {
+                          let {freeTimeBooking} = this.state;
+                          let [startTime, endTime] =
+                            freeTimeBooking[selectedFreeTimeBooking];
 
-                        let dateTimeStartOrdering;
-                        let dateTimeEndOrdering;
+                          let dateTimeStartOrdering;
+                          let dateTimeEndOrdering;
 
-                        if (startTime != null) {
-                          dateTimeStartOrdering = new Date(
-                            startTime.replace(/-/g, '/'),
+                          if (startTime != null) {
+                            dateTimeStartOrdering = new Date(
+                              startTime.replace(/-/g, '/'),
+                            );
+                          }
+                          if (endTime != null) {
+                            dateTimeEndOrdering = new Date(
+                              endTime.replace(/-/g, '/'),
+                            );
+                          }
+
+                          this.setState({
+                            dateTimeStartOrdering,
+                            dateTimeEndOrdering,
+                            selectedFreeTimeBooking,
+                          });
+                        }}
+                        style={{height: 50, width: '100%'}}>
+                        {this.state.freeTimeBooking.map((item, index) => {
+                          let startTime = item[0];
+                          let endTime = item[1] ?? 'Next Free Time';
+                          let value = `${startTime} - ${endTime}`;
+
+                          return (
+                            <Picker.Item
+                              key={`select-${index}`}
+                              label={value}
+                              value={index}
+                            />
                           );
-                        }
-                        if (endTime != null) {
-                          dateTimeEndOrdering = new Date(
-                            endTime.replace(/-/g, '/'),
-                          );
-                        }
-
-                        this.setState({
-                          dateTimeStartOrdering,
-                          dateTimeEndOrdering,
-                          selectedFreeTimeBooking,
-                        });
-                      }}
-                      style={{height: 50, width: '100%'}}>
-                      {this.state.freeTimeBooking.map((item, index) => {
-                        let startTime = item[0];
-                        let endTime = item[1] ?? 'Next Free Time';
-                        let value = `${startTime} - ${endTime}`;
-
-                        return (
-                          <Picker.Item
-                            key={`select-${index}`}
-                            label={value}
-                            value={index}
-                          />
-                        );
-                      })}
-                    </Picker>
-                  </Item>
+                        })}
+                      </Picker>
+                    </Item>
+                  )}
 
                   <DateTimeInput
                     value={this.state.dateTimeStartOrdering}

@@ -8,6 +8,7 @@ import RegisterScreen from '../../resource/screens/auth/RegisterScreen';
 import ResetPasswordScreen from '../../resource/screens/auth/ResetPasswordScreen';
 import UserVerificationScreen from '../../resource/screens/auth/UserVerificationScreen';
 import FormBookingLaboratoryScreen from '../../resource/screens/booking-laboratory/FormBookingLaboratoryScreen';
+import PaymentBookingLaboratory from '../../resource/screens/booking-laboratory/PaymentBookingLaboratory';
 import ListLaboratoryBooking from '../../resource/screens/laboratory/ListLaboratoryBooking';
 import SplashScreen from '../../resource/screens/splash/SplashScreen';
 import HomeTopTapNavigation from './toptap/HomeTopTabNavigation';
@@ -81,6 +82,13 @@ class MainNavigation extends Component {
             }}
             component={FormBookingLaboratoryScreen}
             name="FormBookingLaboratoryScreen"
+          />
+          <Screen
+            options={{
+              title: 'Payment Booking Laboratory',
+            }}
+            component={PaymentBookingLaboratory}
+            name="PaymentBookingLaboratory"
           />
         </Navigator>
       </NavigationContainer>
