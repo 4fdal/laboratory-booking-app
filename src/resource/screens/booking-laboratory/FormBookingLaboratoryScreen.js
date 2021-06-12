@@ -111,7 +111,7 @@ class FormBookingLaboratoryScreen extends Component {
         dataRequest,
       );
 
-      this.props.navigation.replace('PaymentBookingLaboratory', {
+      this.props.navigation.replace('DetailBookingLaboratory', {
         scheduleBookingId: booking_schedule.id,
         fromScreen: 'FormBookingLaboratoryScreen',
       });

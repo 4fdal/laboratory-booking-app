@@ -11,7 +11,7 @@ import {
   Toast,
 } from 'native-base';
 import React, {Component} from 'react';
-import {Dimensions, Modal, View} from 'react-native';
+import {Dimensions, Linking, Modal, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AppContext from '../../../app/context/AppContext';
 import {
@@ -28,13 +28,13 @@ import {STATUS_PENDING} from '../../../app/constant/payment';
 import RNFetchBlob from 'rn-fetch-blob';
 import {ApiBaseUrl} from '../../../config/api';
 
-class PaymentBookingLaboratory extends Component {
+class DetailBookingLaboratory extends Component {
   constructor(props) {
     super(props);
     this.state = {
       scheduleBookingId:
         this.props?.route?.params?.scheduleBookingId ??
-        '088e4a8e-7b8a-49d1-ae70-401040d3aa29',
+        'f6a7c0a2-b127-4ac2-8383-fbd40c02fb90',
       fromScreen: this.props?.route?.params?.fromScreen,
       scheduleBooking: {},
       isLoading: false,
@@ -63,6 +63,10 @@ class PaymentBookingLaboratory extends Component {
     this.props.navigation.setOptions({
       title,
       headerRight: this.renderHeaderRight,
+      headerTitleStyle: {
+        fontSize: 16,
+        paddingRight: 10,
+      },
     });
   };
   renderHeaderRight = props => {
@@ -74,11 +78,7 @@ class PaymentBookingLaboratory extends Component {
         <TouchableOpacity
           disabled={statusNotPending}
           style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-          <Icon
-            style={{fontSize: 24, color}}
-            type="Ionicons"
-            name="create-outline"
-          />
+          <Icon style={{color}} type="Ionicons" name="create-outline" />
           <Text style={{color}}>Edit</Text>
         </TouchableOpacity>
       </View>
@@ -168,9 +168,19 @@ class PaymentBookingLaboratory extends Component {
           } catch (error) {
             handleErrors(error);
           }
-          this.setState({isLoading: true});
+          this.setState({isLoading: false});
         },
       );
+    } catch (error) {}
+  };
+  onDownloadPdfReport = async () => {
+    try {
+      let token = await getAuthenticateToken();
+      if (token) {
+        let urlPDF = `${ApiBaseUrl}/v1/laboratory/booking/plea_submission/${this.state.scheduleBookingId}/pdf?token=${token}`;
+
+        this.props.navigation.navigate('PDFScreen', {urlPDF});
+      }
     } catch (error) {}
   };
   renderObserver = () => {
@@ -221,8 +231,10 @@ class PaymentBookingLaboratory extends Component {
                 </View>
               </CardItem>
               <CardItem
+                bordered
                 cardBody
                 style={{
+                  marginTop : 5,
                   marginLeft: 15,
                   flexDirection: 'column',
                   alignItems: 'flex-start',
@@ -243,7 +255,12 @@ class PaymentBookingLaboratory extends Component {
                     {datetime_end_ordering}
                   </Text>
                 </View>
-                <View style={{flexDirection: 'column', marginTop: 10}}>
+                <View
+                  style={{
+                    flexDirection: 'column',
+                    marginTop: 10,
+                    marginBottom: 20,
+                  }}>
                   <Text style={{fontSize: 12, color: 'black'}}>
                     Description
                   </Text>
@@ -251,12 +268,15 @@ class PaymentBookingLaboratory extends Component {
                     {description}
                   </Text>
                 </View>
-                <TouchableOpacity>
+              </CardItem>
+            </Card>
+            <Card>
+              <CardItem>
+                <TouchableOpacity onPress={this.onDownloadPdfReport}>
                   <View
                     style={{
                       flexDirection: 'row',
-                      marginTop: 20,
-                      marginBottom: 20,
+                      alignItems: 'center',
                     }}>
                     <Icon
                       type="FontAwesome5"
@@ -329,6 +349,6 @@ class PaymentBookingLaboratory extends Component {
   };
 }
 
-PaymentBookingLaboratory.contextType = AppContext;
+DetailBookingLaboratory.contextType = AppContext;
 
-export default PaymentBookingLaboratory;
+export default DetailBookingLaboratory;

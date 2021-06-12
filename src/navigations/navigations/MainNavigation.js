@@ -8,10 +8,12 @@ import RegisterScreen from '../../resource/screens/auth/RegisterScreen';
 import ResetPasswordScreen from '../../resource/screens/auth/ResetPasswordScreen';
 import UserVerificationScreen from '../../resource/screens/auth/UserVerificationScreen';
 import FormBookingLaboratoryScreen from '../../resource/screens/booking-laboratory/FormBookingLaboratoryScreen';
-import PaymentBookingLaboratory from '../../resource/screens/booking-laboratory/PaymentBookingLaboratory';
+import DetailBookingLaboratory from '../../resource/screens/booking-laboratory/DetailBookingLaboratory';
 import ListLaboratoryBooking from '../../resource/screens/laboratory/ListLaboratoryBooking';
+import PDFScreen from '../../resource/screens/pdf/PDFScreen';
 import SplashScreen from '../../resource/screens/splash/SplashScreen';
 import HomeTopTapNavigation from './toptap/HomeTopTabNavigation';
+import ProfileUserScreen from '../../resource/screens/user/ProfileUserScreen';
 
 let {Screen, Navigator} = createStackNavigator();
 
@@ -20,7 +22,7 @@ class MainNavigation extends Component {
     return (
       <NavigationContainer>
         <Navigator>
-          {/* <Screen
+          <Screen
             options={{
               headerShown: false,
             }}
@@ -30,6 +32,9 @@ class MainNavigation extends Component {
           <Screen
             options={{
               title: 'Login',
+              headerTitleStyle: {
+                fontSize: 14,
+              },
             }}
             component={LoginScreen}
             name="LoginScreen"
@@ -37,6 +42,9 @@ class MainNavigation extends Component {
           <Screen
             options={{
               title: 'Register',
+              headerTitleStyle: {
+                fontSize: 14,
+              },
             }}
             component={RegisterScreen}
             name="RegisterScreen"
@@ -44,6 +52,9 @@ class MainNavigation extends Component {
           <Screen
             options={{
               title: 'Register Verification Account',
+              headerTitleStyle: {
+                fontSize: 14,
+              },
             }}
             component={UserVerificationScreen}
             name="UserVerificationScreen"
@@ -51,6 +62,9 @@ class MainNavigation extends Component {
           <Screen
             options={{
               title: 'Forget Password',
+              headerTitleStyle: {
+                fontSize: 14,
+              },
             }}
             component={ForgetPasswordScreen}
             name="ForgetPasswordScreen"
@@ -58,6 +72,9 @@ class MainNavigation extends Component {
           <Screen
             options={{
               title: 'Reset Password',
+              headerTitleStyle: {
+                fontSize: 14,
+              },
             }}
             component={ResetPasswordScreen}
             name="ResetPasswordScreen"
@@ -68,6 +85,16 @@ class MainNavigation extends Component {
             }}
             component={HomeTopTapNavigation}
             name="Home"
+          />
+          <Screen
+            options={{
+              title: 'User Profile',
+              headerTitleStyle: {
+                fontSize: 14,
+              },
+            }}
+            component={ProfileUserScreen}
+            name="ProfileUserScreen"
           />
           <Screen
             options={{
@@ -82,13 +109,20 @@ class MainNavigation extends Component {
             }}
             component={FormBookingLaboratoryScreen}
             name="FormBookingLaboratoryScreen"
-          /> */}
+          />
           <Screen
             options={{
               title: 'Payment Booking Laboratory',
             }}
-            component={PaymentBookingLaboratory}
-            name="PaymentBookingLaboratory"
+            component={DetailBookingLaboratory}
+            name="DetailBookingLaboratory"
+          />
+          <Screen
+            options={{
+              title: 'Document Report',
+            }}
+            component={PDFScreen}
+            name="PDFScreen"
           />
         </Navigator>
       </NavigationContainer>
