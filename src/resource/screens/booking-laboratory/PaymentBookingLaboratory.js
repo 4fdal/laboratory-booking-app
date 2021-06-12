@@ -10,21 +10,29 @@ import {
   Text,
 } from 'native-base';
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {Dimensions, Modal, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AppContext from '../../../app/context/AppContext';
 import {formatRupiah, handleErrors} from '../../../app/helper/GlobalFunction';
 import {RequestAuth} from '../../../app/helper/request/Request';
 import {red} from '../../../config/colors';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import AutoHeightImage from 'react-native-auto-height-image';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 class PaymentBookingLaboratory extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scheduleBookingId: this.props.route.params.scheduleBookingId,
-      paymentId: this.props.route.params.paymentId,
+      scheduleBookingId: '088e4a8e-7b8a-49d1-ae70-401040d3aa29',
+      // scheduleBookingId: this.props.route.params.scheduleBookingId,
+      // paymentId: this.props.route.params.paymentId,
       scheduleBooking: {},
       isLoading: false,
+      isShowImage: false,
+      imageSource: null,
+
+      strButtonUploadImage : 'Upload proof of payment'
     };
   }
   componentDidMount = () => {
@@ -49,6 +57,25 @@ class PaymentBookingLaboratory extends Component {
       handleErrors(error);
     }
     this.setState({isLoading: false});
+  };
+  onClickButtonUploadProofOfPayment = async () => {
+    try {
+      launchCamera(
+        {
+          mediaType: 'photo',
+          cameraType: 'back',
+          saveToPhotos: true,
+        },
+        async response => {
+          try {
+            let {
+              assets: [{uri}],
+            } = response;
+            this.setState({imageSource: uri});
+          } catch (error) {}
+        },
+      );
+    } catch (error) {}
   };
   renderObserver = () => {
     let {
@@ -129,7 +156,12 @@ class PaymentBookingLaboratory extends Component {
                   </Text>
                 </View>
                 <TouchableOpacity>
-                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 10,
+                      marginBottom: 20,
+                    }}>
                     <Icon
                       type="FontAwesome5"
                       name="file-pdf"
@@ -141,9 +173,38 @@ class PaymentBookingLaboratory extends Component {
                   </View>
                 </TouchableOpacity>
               </CardItem>
-              <CardItem footer>
-                <View style={{marginTop: 50, flex: 1}}>
-                  <Button full style={{paddingHorizontal: 10}}>
+            </Card>
+            {this.state.imageSource != null && (
+              <Card>
+                <CardItem
+                  style={{
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    flex: 1,
+                  }}>
+                  <Text
+                    style={{fontSize: 12, color: 'black', marginBottom: 10}}>
+                    Proof of payment
+                  </Text>
+                  <View style={{flex: 1, alignItems: 'center'}}>
+                    <TouchableOpacity
+                      onPress={() => this.setState({isShowImage: true})}>
+                      <AutoHeightImage
+                        width={Dimensions.get('screen').width - 60}
+                        source={{uri: this.state.imageSource}}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </CardItem>
+              </Card>
+            )}
+            <Card>
+              <CardItem footer style={{flexDirection: 'column'}}>
+                <View style={{flex: 1}}>
+                  <Button
+                    onPress={this.onClickButtonUploadProofOfPayment}
+                    full
+                    style={{paddingHorizontal: 10}}>
                     <Icon name="money-check-alt" type="FontAwesome5" />
                     <Text>Upload proof of payment</Text>
                   </Button>
@@ -151,6 +212,13 @@ class PaymentBookingLaboratory extends Component {
               </CardItem>
             </Card>
           </View>
+          <Modal visible={this.state.isShowImage} transparent={true}>
+            <ImageViewer
+              enableSwipeDown={true}
+              onSwipeDown={() => this.setState({isShowImage: false})}
+              imageUrls={[{url: this.state.imageSource}]}
+            />
+          </Modal>
         </Content>
       </Container>
     );

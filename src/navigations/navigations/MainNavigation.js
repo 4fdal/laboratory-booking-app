@@ -20,7 +20,7 @@ class MainNavigation extends Component {
     return (
       <NavigationContainer>
         <Navigator>
-          <Screen
+          {/* <Screen
             options={{
               headerShown: false,
             }}
@@ -82,7 +82,7 @@ class MainNavigation extends Component {
             }}
             component={FormBookingLaboratoryScreen}
             name="FormBookingLaboratoryScreen"
-          />
+          /> */}
           <Screen
             options={{
               title: 'Payment Booking Laboratory',
