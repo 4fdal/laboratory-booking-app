@@ -1,4 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Toast} from 'native-base';
+import {keyTokenSaveLocalStorage} from '../../config/app';
 import AxiosErrors from './request/AxiosErrors';
 
 export const camelToSnakeCase = str =>
@@ -32,12 +34,12 @@ export const handleErrors = (screen, error) => {
 export const formatRupiah = money => {
   var number_string = money.toString(),
     split = number_string.split(','),
-    leftovers  = split[0].length % 3,
-    rupiah = split[0].substr(0, leftovers ),
-    thousand = split[0].substr(leftovers ).match(/\d{1,3}/gi);
+    leftovers = split[0].length % 3,
+    rupiah = split[0].substr(0, leftovers),
+    thousand = split[0].substr(leftovers).match(/\d{1,3}/gi);
 
   if (thousand) {
-    let separator = leftovers  ? '.' : '';
+    let separator = leftovers ? '.' : '';
     rupiah += separator + thousand.join('.');
   }
   rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
@@ -45,19 +47,17 @@ export const formatRupiah = money => {
   return rupiah;
 };
 
-
 export const formatDate = date => {
   let newDate = new Date(date);
-  let d = newDate.getDate()
-  let m = newDate.getMonth() + 1
-  let Y = newDate.getFullYear()
+  let d = newDate.getDate();
+  let m = newDate.getMonth() + 1;
+  let Y = newDate.getFullYear();
 
-  
-  if(d.toString().length == 1) d = "0"+d.toString()
-  if(m.toString().length == 1) m = "0"+m.toString()
+  if (d.toString().length == 1) d = '0' + d.toString();
+  if (m.toString().length == 1) m = '0' + m.toString();
 
-  return `${Y}-${m}-${d}`
-}
+  return `${Y}-${m}-${d}`;
+};
 
 export const formatTime = date => {
   let newDate = new Date(date);
@@ -65,31 +65,43 @@ export const formatTime = date => {
   let i = newDate.getMinutes();
   let s = newDate.getSeconds();
 
-  if (H.toString().length == 1) H = "0" + H.toString()
-  if (i.toString().length == 1) i = "0" + i.toString()
-  if (s.toString().length == 1) s = "0" + s.toString()
+  if (H.toString().length == 1) H = '0' + H.toString();
+  if (i.toString().length == 1) i = '0' + i.toString();
+  if (s.toString().length == 1) s = '0' + s.toString();
 
-  return `${H}:${i}:${s}`
-}
+  return `${H}:${i}:${s}`;
+};
 
 export const formatTime12Hours = date => {
   let newDate = new Date(date);
   let H = newDate.getHours();
   let i = newDate.getMinutes();
 
-  let timeType = 'AM'
+  let timeType = 'AM';
 
-  if(H > 12) {
+  if (H > 12) {
     H -= 12;
-    timeType = 'PM'
+    timeType = 'PM';
   }
 
-  if (H.toString().length == 1) H = "0" + H.toString()
-  if (i.toString().length == 1) i = "0" + i.toString()
+  if (H.toString().length == 1) H = '0' + H.toString();
+  if (i.toString().length == 1) i = '0' + i.toString();
 
-  return `${H}:${i} ${timeType}`
-} 
+  return `${H}:${i} ${timeType}`;
+};
 
 export const formatDateTime = date => {
-  return `${formatDate(date)} ${formatTime(date)}` ;
-}
+  return `${formatDate(date)} ${formatTime(date)}`;
+};
+
+export const getAuthenticateToken = async () => {
+  try {
+    let token = await AsyncStorage.getItem(keyTokenSaveLocalStorage);
+    if (token) {
+      return token;
+    }
+    return undefined;
+  } catch (error) {
+    return undefined;
+  }
+};

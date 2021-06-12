@@ -112,8 +112,8 @@ class FormBookingLaboratoryScreen extends Component {
       );
 
       this.props.navigation.replace('PaymentBookingLaboratory', {
-        scheduleBookingId : booking_schedule.id,
-        paymentId : payment.id
+        scheduleBookingId: booking_schedule.id,
+        fromScreen: 'FormBookingLaboratoryScreen',
       });
     } catch (error) {
       this.requestGetFreeTimeBooking()
