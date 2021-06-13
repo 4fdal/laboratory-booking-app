@@ -143,6 +143,7 @@ class UserVerification extends Component {
                 </Text>
                 <View style={{marginTop: 10}}>
                   <Button
+                    rounded
                     disabled={this.state.isLoading}
                     onPress={this.onClickButtonVerificationAccount}>
                     {this.state.isLoading && (

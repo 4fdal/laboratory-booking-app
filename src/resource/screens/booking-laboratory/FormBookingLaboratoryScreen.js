@@ -27,6 +27,7 @@ import {isLoading, setLoading} from '../../../app/helper/MobxFunction';
 import AxiosErrors from '../../../app/helper/request/AxiosErrors';
 import {Request, RequestAuth} from '../../../app/helper/request/Request';
 import {blue, indigo} from '../../../config/colors';
+import AttachmentInput from '../../components/AttachmentInput';
 import DateTimeInput from '../../components/DateTimeInput';
 import TextError from '../../components/TextError';
 
@@ -39,18 +40,24 @@ class FormBookingLaboratoryScreen extends Component {
       dateTimeEndOrdering: new Date(),
       title: '',
       description: '',
+      hal: '',
+      supervisors_nip: '',
+      supervisors_name: '',
       invalidate: {
         datetime_start_booking: null,
         datetime_end_booking: null,
         title: null,
         description: null,
+        hal: null,
+        supervisors_nip: null,
+        supervisors_name: null,
       },
       freeTimeBooking: [],
       selectedFreeTimeBooking: '',
     };
   }
   componentDidMount = async () => {
-    setLoading(this, false) 
+    setLoading(this, false);
     if (this.props.route.params) {
       let {laboratory} = this.props.route.params;
       this.setState({laboratory});
@@ -92,6 +99,9 @@ class FormBookingLaboratoryScreen extends Component {
         title,
         description,
         laboratory: {id},
+        hal,
+        supervisors_nip,
+        supervisors_name,
       } = this.state;
       let dataRequest = {
         labor_id: id,
@@ -99,6 +109,9 @@ class FormBookingLaboratoryScreen extends Component {
         description,
         datetime_start_booking: formatDateTime(dateTimeStartOrdering),
         datetime_end_booking: formatDateTime(dateTimeEndOrdering),
+        hal,
+        supervisors_nip,
+        supervisors_name,
       };
 
       let request = await RequestAuth(this.props);
@@ -116,7 +129,7 @@ class FormBookingLaboratoryScreen extends Component {
         fromScreen: 'FormBookingLaboratoryScreen',
       });
     } catch (error) {
-      this.requestGetFreeTimeBooking()
+      this.requestGetFreeTimeBooking();
       handleErrors(this, error);
     }
     setLoading(this, false);
@@ -144,20 +157,8 @@ class FormBookingLaboratoryScreen extends Component {
               </CardItem>
             </Card>
             <Card>
-              <CardItem cardBody>
-                <Form style={{width: '95%'}}>
-                  <Item floatingLabel>
-                    <Label>Title Borrow</Label>
-                    <Input
-                      onChangeText={title => this.setState({title})}
-                      style={{marginVertical: 5}}
-                    />
-                  </Item>
-                  <TextError
-                    text={this.state.invalidate.title}
-                    style={{marginLeft: 15}}
-                  />
-
+              <CardItem>
+                <Form>
                   {this.state.freeTimeBooking.length != 0 && (
                     <Item
                       style={{
@@ -251,6 +252,70 @@ class FormBookingLaboratoryScreen extends Component {
                     text={this.state.invalidate.datetime_end_booking}
                     style={{marginLeft: 15}}
                   />
+                </Form>
+              </CardItem>
+            </Card>
+            <Card>
+              <CardItem cardBody>
+                <Form
+                  style={{
+                    alignItems: 'flex-start',
+                    flex: 1,
+                    paddingLeft: 10,
+                    paddingRight: 30,
+                    marginBottom: 20,
+                  }}>
+                  <Item floatingLabel>
+                    <Label>Title Borrow</Label>
+                    <Input
+                      onChangeText={title => this.setState({title})}
+                      style={{marginVertical: 5}}
+                    />
+                  </Item>
+                  <TextError
+                    text={this.state.invalidate.title}
+                    style={{marginLeft: 15}}
+                  />
+
+                  <Item floatingLabel>
+                    <Label>Hal</Label>
+                    <Input
+                      onChangeText={hal => this.setState({hal})}
+                      style={{marginVertical: 5}}
+                    />
+                  </Item>
+                  <TextError
+                    text={this.state.invalidate.hal}
+                    style={{marginLeft: 15}}
+                  />
+
+                  <Item floatingLabel>
+                    <Label>Supervisors Nip</Label>
+                    <Input
+                      onChangeText={supervisors_nip =>
+                        this.setState({supervisors_nip})
+                      }
+                      style={{marginVertical: 5}}
+                    />
+                  </Item>
+                  <TextError
+                    text={this.state.invalidate.supervisors_nip}
+                    style={{marginLeft: 15}}
+                  />
+
+                  <Item floatingLabel>
+                    <Label>Supervisors Name</Label>
+                    <Input
+                      onChangeText={supervisors_name =>
+                        this.setState({supervisors_name})
+                      }
+                      style={{marginVertical: 5}}
+                    />
+                  </Item>
+                  <TextError
+                    text={this.state.invalidate.supervisors_name}
+                    style={{marginLeft: 15}}
+                  />
 
                   <Item floatingLabel>
                     <Label>Description Borrow</Label>
@@ -266,8 +331,10 @@ class FormBookingLaboratoryScreen extends Component {
                   />
                 </Form>
               </CardItem>
+            </Card>
+            <Card>
               <CardItem footer>
-                <View style={{flex: 1, marginTop: 10}}>
+                <View style={{flex: 1}}>
                   <Button
                     onPress={this.onClickPaymentButton}
                     disabled={isLoading(this)}

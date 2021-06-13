@@ -14,6 +14,7 @@ import PDFScreen from '../../resource/screens/pdf/PDFScreen';
 import SplashScreen from '../../resource/screens/splash/SplashScreen';
 import HomeTopTapNavigation from './toptap/HomeTopTabNavigation';
 import ProfileUserScreen from '../../resource/screens/user/ProfileUserScreen';
+import EditBookingLaboratoryScreen from '../../resource/screens/booking-laboratory/EditBookingLaboratoryScreen';
 
 let {Screen, Navigator} = createStackNavigator();
 
@@ -109,6 +110,13 @@ class MainNavigation extends Component {
             }}
             component={FormBookingLaboratoryScreen}
             name="FormBookingLaboratoryScreen"
+          />
+          <Screen
+            options={{
+              title: 'Edit Booking Laboratory',
+            }}
+            component={EditBookingLaboratoryScreen}
+            name="EditBookingLaboratoryScreen"
           />
           <Screen
             options={{

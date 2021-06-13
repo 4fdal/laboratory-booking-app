@@ -40,10 +40,4 @@ adb -s emulator-5554 reverse tcp:8081 tcp:8081
 api gurusaham : http://10.234.132.187/api/v1/candles
 
 
-cd android
-
-.\gradlew clean
-
-cd ..
-
-npm cache clean --force
+cd android && gradlew clean && cd .. && npm cache clean --force

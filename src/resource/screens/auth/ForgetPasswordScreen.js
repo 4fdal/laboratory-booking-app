@@ -83,6 +83,7 @@ class ForgetPasswordScreen extends Component {
             <CardItem footer>
               <View style={{marginTop: 5, flex: 1, flexDirection: 'column'}}>
                 <Button
+                rounded
                   disabled={this.state.isLoading}
                   full
                   onPress={this.onClickButtonForgetPassword}>

@@ -27,12 +27,12 @@ class RegisterScreen extends Component {
     super(props);
     this.statusIdentity = [
       {key: 'college_student', value: 'Students Collage', identityCard: 'nim'},
-      {key: 'another_borrower', value: 'General Person', identityCard: 'nik'},
     ];
     this.state = {
       isLoading: false,
       statusRegister: this.statusIdentity[0].key,
       identityNumber: '',
+      phoneNumber: '',
       email: '',
       address: '',
       password: '',
@@ -45,7 +45,7 @@ class RegisterScreen extends Component {
         password: '',
         password_confirmation: '',
         nik: '',
-        nim: '',
+        phone_number: '',
         name: '',
       },
     };
@@ -72,12 +72,14 @@ class RegisterScreen extends Component {
         passwordConfirmation,
         statusRegister,
         identityNumber,
+        phoneNumber,
       } = this.state;
       let dataRequest = {
         name,
         address,
         email,
         password,
+        phone_number: phoneNumber,
         [identityCard]: identityNumber,
         status_register: statusRegister,
         password_confirmation: passwordConfirmation,
@@ -140,18 +142,13 @@ class RegisterScreen extends Component {
                   <Label>Name</Label>
                   <Input
                     defaultValue={this.state.name}
-                    onChangeText={name =>
-                      this.setState({name})
-                    }
+                    onChangeText={name => this.setState({name})}
                     style={{margin: 10}}
                   />
                 </Item>
-                <TextError
-                  style={{marginLeft: 15}}
-                  text={invalidate.name}
-                />
+                <TextError style={{marginLeft: 15}} text={invalidate.name} />
                 <Item floatingLabel>
-                  <Label>Identity Number (NIK/KTP)</Label>
+                  <Label>Identity Number (NIM)</Label>
                   <Input
                     defaultValue={this.state.identityNumber}
                     onChangeText={identityNumber =>
@@ -172,7 +169,18 @@ class RegisterScreen extends Component {
                     style={{margin: 10}}
                   />
                 </Item>
-                <TextError style={{marginLeft: 15}} text={invalidate.email} />
+                <Item floatingLabel>
+                  <Label>Phone Number</Label>
+                  <Input
+                    defaultValue={this.state.phoneNumber}
+                    onChangeText={phoneNumber => this.setState({phoneNumber})}
+                    style={{margin: 10}}
+                  />
+                </Item>
+                <TextError
+                  style={{marginLeft: 15}}
+                  text={invalidate.phone_number}
+                />
                 <Item floatingLabel>
                   <Label>Address</Label>
                   <Input
@@ -213,6 +221,7 @@ class RegisterScreen extends Component {
                 <Button
                   disabled={this.state.isLoading}
                   full
+                  rounded
                   onPress={this.onClickButtonRegister}>
                   {this.state.isLoading && (
                     <Spinner size="small" color="primary" />

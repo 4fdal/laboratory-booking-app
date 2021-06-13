@@ -19,7 +19,7 @@ import AxiosErrors from '../../../app/helper/request/AxiosErrors';
 import TextError from '../../components/TextError';
 import {Request} from '../../../app/helper/request/Request';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { keyTokenSaveLocalStorage } from '../../../config/app';
+import {keyTokenSaveLocalStorage} from '../../../config/app';
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -63,7 +63,7 @@ class LoginScreen extends Component {
         });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error.status == 422) {
         this.setState({
           invalidate: AxiosErrors.copyErrorsToStringObject(
@@ -80,7 +80,7 @@ class LoginScreen extends Component {
   render = () => {
     return (
       <Container>
-        <Content style={{ padding : 10 }}>
+        <Content style={{padding: 10}}>
           <Card>
             <CardItem header bordered>
               <Text style={{fontSize: 20}}>Login</Text>
@@ -120,6 +120,7 @@ class LoginScreen extends Component {
                 <Button
                   disabled={this.state.isLoading}
                   full
+                  rounded
                   onPress={this.onClickButtonLogin}>
                   {this.state.isLoading && (
                     <Spinner size="small" color="primary" />
@@ -133,7 +134,11 @@ class LoginScreen extends Component {
                     }>
                     <Text style={{fontWeight: 'bold'}}>Register Account</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPasswordScreen')} style={{alignItems: 'flex-end', flex: 1}}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('ForgetPasswordScreen')
+                    }
+                    style={{alignItems: 'flex-end', flex: 1}}>
                     <Text>Lupa Password?</Text>
                   </TouchableOpacity>
                 </View>

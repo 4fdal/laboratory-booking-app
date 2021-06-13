@@ -104,7 +104,7 @@ class ListLaboratoryBooking extends Component {
                       </CardItem>
                       <CardItem footer>
                         <View style={{ flex: 1 }}>
-                          <Button onPress={this.onClickButtonBookingNow(labor)}>
+                          <Button rounded onPress={this.onClickButtonBookingNow(labor)}>
                             <Icon name="add-outline" type="Ionicons" />
                             <Text>Booking Now</Text>
                           </Button>

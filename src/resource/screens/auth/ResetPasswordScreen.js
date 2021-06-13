@@ -112,6 +112,7 @@ class ResetPasswordScreen extends Component {
             <CardItem footer>
               <View style={{marginVertical: 10, flex: 1}}>
                 <Button
+                rounded
                   onPress={this.onClickButtonResetPassword}
                   full
                   disabled={this.state.isLoading}>
